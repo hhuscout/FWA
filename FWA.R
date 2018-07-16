@@ -13,11 +13,14 @@ FWA = function(y, X, Kn, variant)
   jhat = ehat = ehat1 = integer(Kn) ; u=y 
   for(k in 1:Kn)   
   {
+    #derivative of Lost function
     LF = colSums( abs(t(u)%*%X) ) 
     #get gamma_k
     if(variant == 0) { gamma = 2 / (k+2) } 
-    if(k >  1) { LF[jhat[1:(k-1)]] = 0 }  ; 
+    if(k > 1) { LF[jhat[1:(k-1)]] = 0 }  ; 
+    #find
     jhat[k] = which( abs(LF) == max(abs(LF)) )
+    
     if(k == 1) { 
       #get gamma_k by minimization
      if(variant == 1) 
@@ -25,6 +28,7 @@ FWA = function(y, X, Kn, variant)
       fn = function(gamma) { t(gamma * X[,jhat[1]]) %*% (gamma * X[,jhat[1]]) }
       gamma = optim(0.5, fn, method = "L-BFGS-B", lower = 0, upper = 1) $ par
      }
+      #update
      y_hat = gamma * X[,jhat[1]] }
     else    { 
       #get gamma_k by minimization
@@ -34,7 +38,8 @@ FWA = function(y, X, Kn, variant)
                               ((1-gamma) * y_hat + gamma * X[,jhat[k]]) }
        gamma = optim(0.5, fn, method = "L-BFGS-B", lower = 0, upper = 1) $ par
      }
-     ; y_hat = (1-gamma) * y_hat + gamma * X[,jhat[k]] }
+      #update
+     y_hat = (1-gamma) * y_hat + gamma * X[,jhat[k]] }
     u = u - y_hat
     ehat.temp = u ; ehat1[k]=abs(det( t(ehat.temp)%*%ehat.temp ))/ncol(y)
   }
