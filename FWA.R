@@ -9,7 +9,7 @@ FWA = function(y, X, Kn, variant)
 {
   n=nrow(X) ; p=ncol(X) ; y=y-mean(y) ; for(i in 1:p) X[,i]=X[,i] - mean(X[,i])     # 標準化
   beta0.rowsum = rowSums(beta0)   
-  #-OGA ------------------------------------------------------------
+  #-FWA ------------------------------------------------------------
   jhat = ehat = ehat1 = integer(Kn) ; u=y 
   for(k in 1:Kn)   
   {
