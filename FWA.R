@@ -1,4 +1,4 @@
-library(MASS)  ; library(mvtnorm) ; library(nloptr)
+library(MASS)  ; library(nloptr)
 
 # y  : univariate response matrix input
 # X  : covariates matrix input
